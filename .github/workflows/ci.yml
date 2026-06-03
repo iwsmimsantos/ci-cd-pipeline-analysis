@@ -1,0 +1,142 @@
+# GitHub Actions CI/CD Workflow for .NET 8
+# This workflow runs automated checks for build, code quality, and tests
+
+name: CI Pipeline
+
+# Trigger conditions
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+
+# Environment variables
+env:
+  DOTNET_VERSION: '8.0.x'
+  ARTIFACT_NAME: 'test-results'
+
+jobs:
+  # Job 1: Build the project
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    
+    steps:
+      # Check out the repository code
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      # Set up .NET SDK
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+      
+      # Restore NuGet packages with caching
+      - name: Restore dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.nuget/packages
+          key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-nuget-
+      
+      # Restore NuGet packages
+      - name: Dotnet restore
+        run: dotnet restore
+      
+      # Build the solution
+      - name: Build project
+        run: dotnet build --configuration Release --no-restore
+
+  # Job 2: Code quality checks (linting/formatting)
+  lint:
+    name: Code Quality
+    runs-on: ubuntu-latest
+    
+    steps:
+      # Check out the repository code
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      # Set up .NET SDK
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+      
+      # Restore NuGet packages
+      - name: Restore dependencies
+        run: dotnet restore
+      
+      # Check code formatting compliance (fails if changes needed)
+      - name: Verify code formatting
+        run: dotnet format --verify-no-changes --verbosity diagnostic
+
+  # Job 3: Run unit tests
+  tests:
+    name: Tests
+    runs-on: ubuntu-latest
+    needs: build
+    
+    steps:
+      # Check out the repository code
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      # Set up .NET SDK
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+      
+      # Restore NuGet packages with caching
+      - name: Restore dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.nuget/packages
+          key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-nuget-
+      
+      # Restore NuGet packages
+      - name: Dotnet restore
+        run: dotnet restore
+      
+      # Run tests with TRX logger for test results
+      - name: Run tests
+        run: dotnet test --configuration Release --no-restore --logger "trx;LogFileName=test-results.trx" --collect:"XPlat Code Coverage"
+      
+      # Upload test results as artifact for reporting
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: ${{ env.ARTIFACT_NAME }}
+          path: '**/test-results.trx'
+          retention-days: 30
+      
+      # Upload code coverage reports
+      - name: Upload code coverage
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: code-coverage
+          path: '**/coverage.cobertura.xml'
+          retention-days: 30
+
+  # Summary job to ensure all checks pass
+  all-checks:
+    name: All Checks
+    runs-on: ubuntu-latest
+    needs: [build, lint, tests]
+    if: always()
+    
+    steps:
+      - name: Check all jobs status
+        run: |
+          if [ "${{ needs.build.result }}" != "success" ] || [ "${{ needs.lint.result }}" != "success" ] || [ "${{ needs.tests.result }}" != "success" ]; then
+            echo "❌ One or more jobs failed"
+            exit 1
+          fi
+          echo "✅ All checks passed"
