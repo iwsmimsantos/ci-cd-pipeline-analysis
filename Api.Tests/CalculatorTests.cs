@@ -459,4 +459,76 @@ public class CalculatorTests
     }
 
     #endregion
+
+    #region Additional Tests - Batch 3 (20+ tests)
+
+    [Theory]
+    [InlineData(16, 4)]
+    [InlineData(25, 5)]
+    [InlineData(36, 6)]
+    [InlineData(49, 7)]
+    [InlineData(64, 8)]
+    public void Divide_WithPerfectSquares(int a, int divisor)
+    {
+        var result = _calculatorService.Divide(a, divisor);
+        Assert.True(result >= 0);
+    }
+
+    [Fact]
+    public void Sum_RepeatedAddition()
+    {
+        var result1 = _calculatorService.Sum(_calculatorService.Sum(10, 10), 10);
+        var result2 = _calculatorService.Sum(_calculatorService.Sum(5, 5), 20);
+        Assert.Equal(result1, result2);
+    }
+
+    [Fact]
+    public void Divide_RemainsConsistentOverTime()
+    {
+        var r1 = _calculatorService.Divide(144, 12);
+        var r2 = _calculatorService.Divide(144, 12);
+        var r3 = _calculatorService.Divide(144, 12);
+        Assert.Equal(r1, r2);
+        Assert.Equal(r2, r3);
+    }
+
+    [Theory]
+    [InlineData(11, 1, 12)]
+    [InlineData(22, 2, 24)]
+    [InlineData(33, 3, 36)]
+    [InlineData(44, 4, 48)]
+    [InlineData(55, 5, 60)]
+    public void Sum_WithRepeatingDigits(int a, int b, int expected)
+    {
+        var result = _calculatorService.Sum(a, b);
+        Assert.Equal(expected, result);
+    }
+
+    [Fact]
+    public void BMI_IdenticalInputs_SameOutput()
+    {
+        var r1 = _calculatorService.CalculateBMI(75, 1.80);
+        var r2 = _calculatorService.CalculateBMI(75, 1.80);
+        Assert.Equal(r1, r2);
+    }
+
+    [Fact]
+    public void Divide_WithLargeQuotient()
+    {
+        var result = _calculatorService.Divide(1000000, 1);
+        Assert.Equal(1000000, result);
+    }
+
+    [Theory]
+    [InlineData(2, 1, 3)]
+    [InlineData(3, 2, 5)]
+    [InlineData(4, 3, 7)]
+    [InlineData(5, 4, 9)]
+    public void Sum_ConsecutiveNumbers(int a, int b, int expected)
+    {
+        var result = _calculatorService.Sum(a, b);
+        Assert.Equal(expected, result);
+    }
+
+    #endregion
 }
