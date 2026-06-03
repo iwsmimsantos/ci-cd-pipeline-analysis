@@ -519,6 +519,7 @@ public class CalculatorTests
     [Fact]
     public void Divide_WithLargeQuotient()
     {
+        Thread.Sleep(3000);
         var result = _calculatorService.Divide(1000000, 1);
         Assert.Equal(1000000, result);
     }
@@ -530,6 +531,7 @@ public class CalculatorTests
     [InlineData(5, 4, 9)]
     public void Sum_ConsecutiveNumbers(int a, int b, int expected)
     {
+        Thread.Sleep(3000);
         var result = _calculatorService.Sum(a, b);
         Assert.Equal(expected, result);
     }
