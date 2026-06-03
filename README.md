@@ -14,3 +14,7 @@ Ponderada
 ### Run 3: Baseline
 - Status: ✅ Pass
 - Commits: Normal commits for baseline measurement
+
+### Run 4: Failing Test
+- Status: ❌ FAIL (Tests)
+- Change: Broke Sum test assertion (expecting 999 instead of 8)

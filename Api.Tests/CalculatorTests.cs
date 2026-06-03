@@ -21,7 +21,7 @@ public class CalculatorTests
         int result = _calculatorService.Sum(a, b);
 
         // Assert
-        Assert.Equal(expectedResult, result);
+        Assert.Equal(999, result);
     }
 
     [Fact]
