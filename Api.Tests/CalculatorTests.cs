@@ -5,7 +5,7 @@ namespace Api.Tests;
 
 public class CalculatorTests
 {
-    private readonly CalculatorService _calculatorService = new();
+private readonly CalculatorService _calculatorService = new();
 
     #region Sum Tests
 
