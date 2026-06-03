@@ -110,7 +110,7 @@ jobs:
       # Upload test results as artifact for reporting
       - name: Upload test results
         if: always()
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: ${{ env.ARTIFACT_NAME }}
           path: '**/test-results.trx'
@@ -119,7 +119,7 @@ jobs:
       # Upload code coverage reports
       - name: Upload code coverage
         if: always()
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: code-coverage
           path: '**/coverage.cobertura.xml'
