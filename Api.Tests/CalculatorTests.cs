@@ -8,7 +8,7 @@ public class CalculatorTests
     private readonly CalculatorService _calculatorService = new();
 
     #region Sum Tests
-    
+
     [Fact]
     public void Sum_WithPositiveNumbers_ReturnsCorrectSum()
     {
