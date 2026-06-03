@@ -4,7 +4,7 @@ public class CalculatorService
 {
     public int Sum(int a, int b)
     {
-        return a + b;
+        return a + b
     }
 
     public int Divide(int a, int b)
