@@ -477,6 +477,7 @@ public class CalculatorTests
     [Fact]
     public void Sum_RepeatedAddition()
     {
+        Thread.Sleep(3000);
         var result1 = _calculatorService.Sum(_calculatorService.Sum(10, 10), 10);
         var result2 = _calculatorService.Sum(_calculatorService.Sum(5, 5), 20);
         Assert.Equal(result1, result2);
@@ -485,6 +486,7 @@ public class CalculatorTests
     [Fact]
     public void Divide_RemainsConsistentOverTime()
     {
+        Thread.Sleep(3000);
         var r1 = _calculatorService.Divide(144, 12);
         var r2 = _calculatorService.Divide(144, 12);
         var r3 = _calculatorService.Divide(144, 12);
@@ -500,6 +502,7 @@ public class CalculatorTests
     [InlineData(55, 5, 60)]
     public void Sum_WithRepeatingDigits(int a, int b, int expected)
     {
+        Thread.Sleep(3000);
         var result = _calculatorService.Sum(a, b);
         Assert.Equal(expected, result);
     }
@@ -507,6 +510,7 @@ public class CalculatorTests
     [Fact]
     public void BMI_IdenticalInputs_SameOutput()
     {
+        Thread.Sleep(3000);
         var r1 = _calculatorService.CalculateBMI(75, 1.80);
         var r2 = _calculatorService.CalculateBMI(75, 1.80);
         Assert.Equal(r1, r2);
