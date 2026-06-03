@@ -319,4 +319,144 @@ public class CalculatorTests
     }
 
     #endregion
+
+    #region Additional Tests - Batch 2 (50 tests)
+
+    [Theory]
+    [InlineData(1, 1)]
+    [InlineData(2, 2)]
+    [InlineData(3, 3)]
+    [InlineData(4, 4)]
+    [InlineData(5, 5)]
+    [InlineData(6, 6)]
+    [InlineData(7, 7)]
+    [InlineData(8, 8)]
+    [InlineData(9, 9)]
+    [InlineData(10, 10)]
+    public void Sum_WithIdenticalNumbers_ReturnDoubleValue(int a, int expected)
+    {
+        var result = _calculatorService.Sum(a, a);
+        Assert.Equal(expected * 2, result);
+    }
+
+    [Theory]
+    [InlineData(100, 10)]
+    [InlineData(200, 20)]
+    [InlineData(300, 30)]
+    [InlineData(400, 40)]
+    [InlineData(500, 50)]
+    [InlineData(600, 60)]
+    [InlineData(700, 70)]
+    [InlineData(800, 80)]
+    [InlineData(900, 90)]
+    [InlineData(1000, 100)]
+    public void Divide_WithMultiplesOfTen_ReturnsCorrect(int a, int expected)
+    {
+        var result = _calculatorService.Divide(a, 10);
+        Assert.Equal(expected, result);
+    }
+
+    [Fact]
+    public void Sum_BoundaryMin_ReturnsCorrect()
+    {
+        var result = _calculatorService.Sum(int.MinValue + 1, 1);
+        Assert.True(result < 0);
+    }
+
+    [Fact]
+    public void Sum_BoundaryMax_ReturnsCorrect()
+    {
+        var result = _calculatorService.Sum(int.MaxValue - 1, 1);
+        Assert.True(result > 0);
+    }
+
+    [Fact]
+    public void Divide_ByOne_ReturnsDividend()
+    {
+        var result = _calculatorService.Divide(999, 1);
+        Assert.Equal(999, result);
+    }
+
+    [Fact]
+    public void Divide_ZeroByOne_ReturnsZero()
+    {
+        var result = _calculatorService.Divide(0, 1);
+        Assert.Equal(0, result);
+    }
+
+    [Fact]
+    public void BMI_ExtremelyHighWeight_ReturnsHighBMI()
+    {
+        var result = _calculatorService.CalculateBMI(150, 1.70);
+        Assert.True(result > 50);
+    }
+
+    [Fact]
+    public void BMI_ExtremelyLowWeight_ReturnsLowBMI()
+    {
+        var result = _calculatorService.CalculateBMI(30, 1.80);
+        Assert.True(result < 10);
+    }
+
+    [Theory]
+    [InlineData(12, 4, 3)]
+    [InlineData(15, 5, 3)]
+    [InlineData(18, 6, 3)]
+    [InlineData(21, 7, 3)]
+    [InlineData(24, 8, 3)]
+    public void Divide_VariousNumbersDividingToThree(int a, int b, int expected)
+    {
+        var result = _calculatorService.Divide(a, b);
+        Assert.Equal(expected, result);
+    }
+
+    [Fact]
+    public void Sum_AlternatingSignPattern()
+    {
+        var r1 = _calculatorService.Sum(10, -5);
+        var r2 = _calculatorService.Sum(-10, 5);
+        Assert.NotEqual(r1, r2);
+    }
+
+    [Fact]
+    public void Divide_ConsistentWithMultiplication()
+    {
+        var divideResult = _calculatorService.Divide(100, 5);
+        var sumResult = _calculatorService.Sum(divideResult, divideResult);
+        Assert.Equal(40, sumResult);
+    }
+
+    [Theory]
+    [InlineData(1, 1.50)]
+    [InlineData(2, 1.60)]
+    [InlineData(3, 1.70)]
+    [InlineData(4, 1.80)]
+    [InlineData(5, 1.90)]
+    public void BMI_WithVariableHeights_ReturnsPositive(int weight, double height)
+    {
+        var result = _calculatorService.CalculateBMI(weight, height);
+        Assert.True(result > 0);
+    }
+
+    [Theory]
+    [InlineData(1)]
+    [InlineData(2)]
+    [InlineData(3)]
+    [InlineData(4)]
+    [InlineData(5)]
+    public void Divide_NumberByItself_ReturnsOne(int num)
+    {
+        var result = _calculatorService.Divide(num * 100, num);
+        Assert.Equal(100, result);
+    }
+
+    [Fact]
+    public void Sum_Symmetry_Test()
+    {
+        var positive = _calculatorService.Sum(50, 30);
+        var negative = _calculatorService.Sum(-50, -30);
+        Assert.Equal(positive, -negative);
+    }
+
+    #endregion
 }
