@@ -6,3 +6,7 @@ Ponderada
 ### Run 1: Baseline
 - Status: ✅ Pass
 - Commits: Normal commits for baseline measurement
+
+### Run 2: Baseline
+- Status: ✅ Pass
+- Commits: Normal commits for baseline measurement
