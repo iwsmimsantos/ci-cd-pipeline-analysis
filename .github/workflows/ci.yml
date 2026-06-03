@@ -32,6 +32,15 @@ jobs:
         with:
           dotnet-version: ${{ env.DOTNET_VERSION }}
       
+      # Restore NuGet packages with caching
+      - name: Restore dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.nuget/packages
+          key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-nuget-
+      
       # Restore NuGet packages
       - name: Dotnet restore
         run: dotnet restore
@@ -55,6 +64,15 @@ jobs:
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: ${{ env.DOTNET_VERSION }}
+      
+      # Restore NuGet packages with caching
+      - name: Restore dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.nuget/packages
+          key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-nuget-
       
       # Restore NuGet packages
       - name: Dotnet restore
@@ -80,6 +98,15 @@ jobs:
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: ${{ env.DOTNET_VERSION }}
+      
+      # Restore NuGet packages with caching
+      - name: Restore dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.nuget/packages
+          key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-nuget-
       
       # Restore NuGet packages
       - name: Dotnet restore
